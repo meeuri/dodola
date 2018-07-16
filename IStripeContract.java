@@ -1,5 +1,7 @@
 package com.example.eery.dodola;
 
+import com.example.eery.dodola.entities.Forecast;
+
 import java.util.List;
 
 public interface IStripeContract {
@@ -14,7 +16,6 @@ public interface IStripeContract {
     }
 
     interface Model{
-        void getWeekData();
-        void getDailyData();
+        Forecast getWeekData();
     }
 }

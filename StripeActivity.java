@@ -16,15 +16,22 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
     private RecyclerView mStripeRecyclerView;
     private StripeItemAdapter mStripeAdapter;
     private LinearLayoutManager mStripeManager;
+    private Model mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe);
-        mStripePresenter = new StripePresenter(this);
+        initLayers();
         initStripe();
     }
+
+    private void initLayers() {
+        mModel = new Model();
+        mStripePresenter = new StripePresenter(this, mModel);
+    }
+
 
     private void initStripe(){
 
