@@ -1,5 +1,6 @@
 package com.example.eery.dodola.presentation.stripe;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,28 +12,36 @@ import android.widget.ProgressBar;
 import com.example.eery.dodola.R;
 import com.example.eery.dodola.entities.Forecast;
 
-public class StripeActivity extends AppCompatActivity implements IStripeContract.View {
+public class StripeActivity extends AppCompatActivity implements IStripeContract.View{
 
     private static final String TAG = "StripeActivityStory";
+    public static final String DATE_FORMAT = "dd/MM";
+    // Условный разделитель для значений температору
+    public static final String TEMP_SEPARATOR = " ... ";
     private IStripeContract.Presenter mStripePresenter;
+
+    public static final String DEGREE_ICON_NAME = "ic_degree";
 
     private ProgressBar mProgressBar;
     private RecyclerView mStripeRecyclerView;
     private StripeItemAdapter mStripeAdapter;
     private LinearLayoutManager mStripeManager;
 
+    SwipeRefreshLayout mRefresher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe);
-        initPresenter();
+        init();
     }
 
     private void init(){
+        initPresenter();
         initStripe();
-        init();
-        mProgressBar = findViewById(R.id.progressBar);
+        initRefresher();
+        mStripePresenter.onStripeViewCreate();
     }
 
     private void initPresenter() {
@@ -49,29 +58,25 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
         mStripeAdapter = new StripeItemAdapter(null, this);
         mStripeRecyclerView.setLayoutManager(mStripeManager);
         mStripeRecyclerView.setAdapter(mStripeAdapter);
+    }
 
-        mStripePresenter.onStripeViewCreate();
+    private void initRefresher(){
+        mRefresher = findViewById(R.id.pullRefresh);
+        mRefresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d(TAG, "onRefresh()");
+                mStripePresenter.onPullRefresh();
+            }
+        });
+        mRefresher.setRefreshing(true);
     }
 
     @Override
     public void updateData(Forecast forecast) {
         mStripeAdapter.setData(forecast);
         mStripeAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showDepth() {
-
-    }
-
-    @Override
-    public void showProgressBar() {
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        mStripePresenter.onDataUpdated();
     }
 
     @Override
@@ -84,10 +89,22 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
         mStripeRecyclerView.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void stopRefresh() {
+        Log.d(TAG, "stopRefresh()");
+        mRefresher.setRefreshing(false);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mStripePresenter.onStripeViewDestroy();
     }
+
+    @Override
+    public void showDepth() {
+
+    }
+
+
 }

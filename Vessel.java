@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class Vessel {
     public static final int DATA_MULIPLIER = 1000;
 
-    public static String getDate(long milliSeconds, String dateFormat)
+    public static String convertDate(long milliSeconds, String dateFormat)
     {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
 

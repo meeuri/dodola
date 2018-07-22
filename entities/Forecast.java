@@ -36,7 +36,6 @@ public class Forecast implements Serializable{
         private List<Day> days = null;
 
         public List<Day> getDays() {
-
             return days;
         }
     }

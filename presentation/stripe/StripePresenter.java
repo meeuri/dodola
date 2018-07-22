@@ -41,12 +41,26 @@ public class StripePresenter implements IStripeContract.Presenter
 
     }
 
+    @Override
+    public void onDataUpdated() {
+        Log.d(TAG, "onDataUpdated()");
+        mStripeView.stopRefresh();
+        mStripeView.showStripe();
+
+    }
+
+    @Override
+    public void onPullRefresh() {
+        Log.d(TAG, "onPullRefresh()");
+        RequestWeekForecast task = new RequestWeekForecast();
+        task.execute();
+    }
+
     // получение прогноза не неделю
     private class RequestWeekForecast extends AsyncTask<Void, Void, Forecast>{
 
         @Override
         protected void onPreExecute() {
-            mStripeView.showProgressBar();
             mStripeView.hideStripe();
         }
 
@@ -59,8 +73,7 @@ public class StripePresenter implements IStripeContract.Presenter
         protected void onPostExecute(Forecast forecast) {
 
             mStripeView.updateData(forecast);
-            mStripeView.hideProgressBar();
-            mStripeView.showStripe();
+
         }
     }
 

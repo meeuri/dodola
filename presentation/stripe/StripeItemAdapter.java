@@ -1,6 +1,7 @@
 package com.example.eery.dodola.presentation.stripe;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,8 +15,6 @@ import com.example.eery.dodola.R;
 import com.example.eery.dodola.Vessel;
 import com.example.eery.dodola.entities.Day;
 import com.example.eery.dodola.entities.Forecast;
-
-import java.util.List;
 
 public class StripeItemAdapter extends RecyclerView.Adapter<StripeItemAdapter.StripeItemViewHolder>
 {
@@ -53,36 +52,48 @@ public class StripeItemAdapter extends RecyclerView.Adapter<StripeItemAdapter.St
     @Override
     public void onBindViewHolder(@NonNull StripeItemViewHolder stripeItemViewHolder, int i) {
         Day day = mForecast.getDays().get(i);
-        String date = Vessel.getDate(day.getTime(), "dd/MM");
+        String date = Vessel.convertDate(day.getTime(), StripeActivity.DATE_FORMAT);
         stripeItemViewHolder.mDateView.setText(date);
 
-        int imageId = mContext.getResources()
-                    .getIdentifier(Vessel.convertIconName(day.getIconName()),
+        Resources resources = mContext.getResources();
+
+        int iconImageId = resources.getIdentifier(Vessel.convertIconName(day.getIconName()),
                             "drawable",
                             mContext.getPackageName());
 
-        Log.d("ICON", imageId + " " + day.getIconName());
+        Log.d("ICON", iconImageId + " " + day.getIconName());
 
-        stripeItemViewHolder.mIconView.setImageResource(imageId);
+        stripeItemViewHolder.mIconView.setImageResource(iconImageId);
 
-        stripeItemViewHolder.mLowTempView.setText(String.valueOf((int)day.getTempLow()));
-        stripeItemViewHolder.mHighTempView.setText(String.valueOf((int)day.getTempHigh()));
+        String temp = String.valueOf((int)day.getTempLow()) + StripeActivity.TEMP_SEPARATOR
+                + String.valueOf((int)day.getTempHigh());
+
+        stripeItemViewHolder.mTempView.setText(temp);
+
+        int degreeImageId = resources.getIdentifier(
+                            StripeActivity.DEGREE_ICON_NAME,
+                            "drawable",
+                            mContext.getPackageName());
+
+        stripeItemViewHolder.mDegreeView.setImageResource(degreeImageId);
+
+
 
     }
 
     public class StripeItemViewHolder extends RecyclerView.ViewHolder{
 
         public TextView mDateView;
-        public TextView mHighTempView;
-        public TextView mLowTempView;
+        public TextView mTempView;
         public ImageView mIconView;
+        public ImageView mDegreeView;
 
         public StripeItemViewHolder(@NonNull View itemView) {
             super(itemView);
             mDateView = itemView.findViewById(R.id.dateView);
             mIconView = itemView.findViewById(R.id.iconView);
-            mHighTempView = itemView.findViewById(R.id.highTempView);
-            mLowTempView = itemView.findViewById(R.id.lowTempView);
+            mTempView = itemView.findViewById(R.id.tempView);
+            mDegreeView = itemView.findViewById(R.id.degreeView);
         }
 
     }

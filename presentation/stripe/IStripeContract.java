@@ -7,16 +7,17 @@ public interface IStripeContract {
         void updateData(Forecast forecast);
         // показать детализацию
         void showDepth();
-        void showProgressBar();
-        void hideProgressBar();
         void showStripe();
         void hideStripe();
+        void stopRefresh();
     }
 
     interface Presenter {
         void onItemClick();
         void onStripeViewCreate();
         void onStripeViewDestroy();
+        void onDataUpdated();
+        void onPullRefresh();
     }
 
 }
