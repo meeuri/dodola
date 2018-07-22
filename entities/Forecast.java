@@ -3,9 +3,10 @@ package com.example.eery.dodola.entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Forecast {
+public class Forecast implements Serializable{
     private static final String TAG = "ForecastStory";
     private double longitude;
     @SerializedName("timezone")
@@ -20,23 +21,23 @@ public class Forecast {
         return timezone;
     }
 
-    public List<Day> getData(){
+    public List<Day> getDays(){
 
-        return daily.getData();
+        return daily.getDays();
     }
 
-    public class Daily {
+    public class Daily implements Serializable{
 
         @SerializedName("summary")
         @Expose
         private String summary;
         @SerializedName("data")
         @Expose
-        private List<Day> data = null;
+        private List<Day> days = null;
 
-        public List<Day> getData() {
+        public List<Day> getDays() {
 
-            return data;
+            return days;
         }
     }
 

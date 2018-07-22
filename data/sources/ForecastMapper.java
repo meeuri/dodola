@@ -1,4 +1,4 @@
-package com.example.eery.dodola;
+package com.example.eery.dodola.data.sources;
 
 import android.util.Log;
 
@@ -16,14 +16,17 @@ public class ForecastMapper {
         mHelper = helper;
     }
 
-    public Forecast getDataAsync(double lat, double lon) throws IOException {
+    public Forecast getDataSync(double lat, double lon) throws IOException {
         String lang = "ru",
                 exclude = "currently",
                 //  exclude = "currently,minutely,hourly,alerts,flags",
                 units = "si";
 
-        Response<Forecast> response = mHelper.getService().getForecast( lat, lon, lang, exclude, units).execute();
+        Response<Forecast> response = mHelper.getService()
+                    .getForecast( lat, lon, lang, exclude, units)
+                    .execute();
         Log.d(TAG, response.toString() +  " " + response.body().getTimezone());
         return response.body();
     }
+
 }

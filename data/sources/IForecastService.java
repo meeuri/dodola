@@ -1,4 +1,4 @@
-package com.example.eery.dodola;
+package com.example.eery.dodola.data.sources;
 
 import com.example.eery.dodola.entities.Forecast;
 
