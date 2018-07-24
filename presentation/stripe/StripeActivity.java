@@ -7,10 +7,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 
+import com.example.eery.dodola.App;
 import com.example.eery.dodola.R;
 import com.example.eery.dodola.entities.Forecast;
+
+import javax.inject.Inject;
 
 public class StripeActivity extends AppCompatActivity implements IStripeContract.View{
 
@@ -18,14 +20,18 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
     public static final String DATE_FORMAT = "dd/MM";
     // Условный разделитель для значений температору
     public static final String TEMP_SEPARATOR = " ... ";
-    private IStripeContract.Presenter mStripePresenter;
+
+    @Inject
+    protected IStripeContract.Presenter mStripePresenter;
+
+
 
     public static final String DEGREE_ICON_NAME = "ic_degree";
 
-    private ProgressBar mProgressBar;
     private RecyclerView mStripeRecyclerView;
     private StripeItemAdapter mStripeAdapter;
     private LinearLayoutManager mStripeManager;
+
 
     SwipeRefreshLayout mRefresher;
 
@@ -34,18 +40,28 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe);
+
+        App.getComponent().injectStripeActivity(this);
+        mStripePresenter.attachView(this);
+
         init();
     }
 
     private void init(){
+        initAppComponent();
         initPresenter();
         initStripe();
         initRefresher();
         mStripePresenter.onStripeViewCreate();
     }
 
+    private void initAppComponent() {
+
+    }
+
     private void initPresenter() {
-        mStripePresenter = new StripePresenter(this);
+       // mStripePresenter = new StripePresenter();
+
     }
 
 

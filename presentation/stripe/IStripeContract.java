@@ -18,6 +18,7 @@ public interface IStripeContract {
         void onStripeViewDestroy();
         void onDataUpdated();
         void onPullRefresh();
+        void attachView(IStripeContract.View view);
     }
 
 }

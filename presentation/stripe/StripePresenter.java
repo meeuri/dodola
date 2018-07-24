@@ -7,6 +7,8 @@ import com.example.eery.dodola.data.repositories.ForecastRepository;
 import com.example.eery.dodola.domain.ForecastInteractor;
 import com.example.eery.dodola.entities.Forecast;
 
+import javax.inject.Inject;
+
 public class StripePresenter implements IStripeContract.Presenter
 {
     private static final String TAG = "StripePresenterStory";
@@ -14,8 +16,13 @@ public class StripePresenter implements IStripeContract.Presenter
     private IStripeContract.View mStripeView;
     private ForecastInteractor mInteractor;
 
-    public StripePresenter(IStripeContract.View stripeView){
-        mStripeView = stripeView;
+    public StripePresenter(){
+        //тест Dagger2
+        //mStripeView = stripeView;
+    }
+
+    public void attachView(IStripeContract.View view){
+        this.mStripeView = view;
         initLayers();
     }
 
