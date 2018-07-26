@@ -9,7 +9,6 @@ public class ForecastInteractor implements IForecastInteractor {
 
     IForecastRepository mRepository;
 
-    @Inject
     public ForecastInteractor(IForecastRepository repository){
         mRepository = repository;
     }

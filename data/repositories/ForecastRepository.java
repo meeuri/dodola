@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class ForecastRepository implements IForecastRepository {
     public static final String TAG = "ForecastRepositoryStory";
 
@@ -18,16 +20,9 @@ public class ForecastRepository implements IForecastRepository {
     private static final float TST_LON = (float) 37.6173;
 
     private ForecastMapper mMapper;
-    private RetrofitHelper mHelper;
 
-    public ForecastRepository()
-    {
-        init();
-    }
-
-    private void init(){
-        mHelper = new RetrofitHelper();
-        mMapper = new ForecastMapper(mHelper);
+    public ForecastRepository(ForecastMapper mapper){
+        mMapper = mapper;
     }
 
 

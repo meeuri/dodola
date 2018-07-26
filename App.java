@@ -12,7 +12,8 @@ public class App extends Application {
         component = DaggerAppComponent.create();
     }
 
-    public static AppComponent getComponent(){
+    public static AppComponent getComponent() {
         return component;
     }
+
 }

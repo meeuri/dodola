@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import com.example.eery.dodola.App;
+import com.example.eery.dodola.AppComponent;
+import com.example.eery.dodola.DaggerAppComponent;
+import com.example.eery.dodola.ForecastModule;
 import com.example.eery.dodola.R;
 import com.example.eery.dodola.entities.Forecast;
 
@@ -21,10 +23,7 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
     // Условный разделитель для значений температору
     public static final String TEMP_SEPARATOR = " ... ";
 
-    @Inject
     protected IStripeContract.Presenter mStripePresenter;
-
-
 
     public static final String DEGREE_ICON_NAME = "ic_degree";
 
@@ -40,27 +39,19 @@ public class StripeActivity extends AppCompatActivity implements IStripeContract
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stripe);
-
-        App.getComponent().injectStripeActivity(this);
-        mStripePresenter.attachView(this);
-
         init();
     }
 
     private void init(){
-        initAppComponent();
         initPresenter();
         initStripe();
         initRefresher();
         mStripePresenter.onStripeViewCreate();
     }
 
-    private void initAppComponent() {
-
-    }
 
     private void initPresenter() {
-       // mStripePresenter = new StripePresenter();
+       mStripePresenter = new StripePresenter(this);
 
     }
 

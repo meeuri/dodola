@@ -3,6 +3,8 @@ package com.example.eery.dodola.presentation.stripe;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.eery.dodola.App;
+import com.example.eery.dodola.DaggerAppComponent;
 import com.example.eery.dodola.data.repositories.ForecastRepository;
 import com.example.eery.dodola.domain.ForecastInteractor;
 import com.example.eery.dodola.entities.Forecast;
@@ -14,26 +16,21 @@ public class StripePresenter implements IStripeContract.Presenter
     private static final String TAG = "StripePresenterStory";
 
     private IStripeContract.View mStripeView;
-    private ForecastInteractor mInteractor;
 
-    public StripePresenter(){
-        //тест Dagger2
-        //mStripeView = stripeView;
+    @Inject
+    public ForecastInteractor mInteractor;
+
+    public StripePresenter(IStripeContract.View stripeView) {
+        mStripeView = stripeView;
+        init();
     }
 
-    public void attachView(IStripeContract.View view){
-        this.mStripeView = view;
-        initLayers();
-    }
-
-    private  void initLayers(){
-        // предполагается, что здесь не должно быть прямой связи с репозиторием
-        mInteractor = new ForecastInteractor(new ForecastRepository());
+    private void init(){
+        App.getComponent().inject(this);
     }
 
     @Override
     public void onItemClick() {
-
     }
 
     @Override
